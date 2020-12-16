@@ -1,5 +1,10 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React from 'react';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
@@ -10,45 +15,105 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 // making sure things like the back button and bookmarks
 // work properly.
 
-export default function TutorialExample() {
+
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: any;
+    value: any;
+}
+
+function a11yProps(index: any) {
+    return {
+        id: `scrollable-auto-tab-${index}`,
+        'aria-controls': `scrollable-auto-tabpanel-${index}`,
+    };
+}
+
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
     return (
-        <Router>
-            <div>
-                <ul>
-                    <li>
-                        <Link to="/">introduction</Link>
-                    </li>
-                    <li>
-                        <Link to="/about">about voter app</Link>
-                    </li>
-                    <li>
-                        <Link to="/dashboard">dashboard</Link>
-                    </li>
-                </ul>
-
-                <hr />
-
-                {/*
-          A <Switch> looks through all its children <Route>
-          elements and renders the first one whose path
-          matches the current URL. Use a <Switch> any time
-          you have multiple routes, but you want only one
-          of them to render at a time
-        */}
-                <Switch>
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
-                    <Route path="/about">
-                        <About />
-                    </Route>
-                    <Route path="/dashboard">
-                        <Dashboard />
-                    </Route>
-                </Switch>
-            </div>
-        </Router>
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`scrollable-auto-tabpanel-${index}`}
+            aria-labelledby={`scrollable-auto-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box p={3}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
     );
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        flexGrow: 1,
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+    },
+}));
+
+export default function TutorialExample() {
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+        setValue(newValue);
+    };
+
+
+    let classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            <AppBar position="static" color="default">
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    aria-label="scrollable auto tabs example"
+                >
+                    <Tab label="about" {...a11yProps(0)} />
+                    <Tab label="the app" {...a11yProps(1)} />
+                    <Tab label="the conduct" {...a11yProps(2)} />
+                    <Tab label="Item Four" {...a11yProps(3)} />
+                    <Tab label="Item Five" {...a11yProps(4)} />
+                    <Tab label="Item Six" {...a11yProps(5)} />
+                    <Tab label="Item Seven" {...a11yProps(6)} />
+                </Tabs>
+            </AppBar>
+            <TabPanel value={value} index={0}>
+                <Home />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                <About />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <Dashboard />
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                Item Four
+      </TabPanel>
+            <TabPanel value={value} index={4}>
+                Item Five
+      </TabPanel>
+            <TabPanel value={value} index={5}>
+                Item Six
+      </TabPanel>
+            <TabPanel value={value} index={6}>
+                Item Seven
+      </TabPanel>
+        </div>);
+
+
 }
 
 // You can think of these components as "pages"
