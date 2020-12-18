@@ -81,13 +81,13 @@ export default function TutorialExample() {
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
                 >
-                    <Tab label="start" {...a11yProps(0)} />
-                    <Tab label="voter app" {...a11yProps(1)} />
-                    <Tab label="bgio state" {...a11yProps(2)} />
-                    <Tab label="bgio transitions" {...a11yProps(3)} />
-                    <Tab label="walk through" {...a11yProps(4)} />
-                    <Tab label="small but important" {...a11yProps(5)} />
-                    <Tab label="acknowledgements" {...a11yProps(6)} />
+                    <Tab label="about" {...a11yProps(0)} />
+                    <Tab label="the app" {...a11yProps(1)} />
+                    <Tab label="the conduct" {...a11yProps(2)} />
+                    <Tab label="Item Four" {...a11yProps(3)} />
+                    <Tab label="Item Five" {...a11yProps(4)} />
+                    <Tab label="Item Six" {...a11yProps(5)} />
+                    <Tab label="Item Seven" {...a11yProps(6)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
@@ -97,7 +97,7 @@ export default function TutorialExample() {
                 <About />
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <BgioState />
+                <Dashboard />
             </TabPanel>
             <TabPanel value={value} index={3}>
                 Item Four
@@ -125,14 +125,12 @@ function Home() {
             <h3>bgio state modeling</h3>
             <p>
                 this simple application is designed to illustrate state changes as
-                modeled in the boardgame.io. The application models a
-                simple voting application. bgio is a multiplayer game library which
-                fashions game worlds from state engines.  bgio also manages network
-                connectivity so clients may connect and maintain central state through
-                a variety of means.  This simple app takes advantage of "Local"
-                state multiplayer mode which places players side by side on the same
-                monitor.  In the next section we'll talk more about the voter app and
-                explore the bgio api.
+                modeled in the boardgame.io js game libary the application models a
+                simple voting application. Two players (north and south) are voting a
+                proposition. The game is a Finite State Automata which demonstrates the
+                various aspects of the bgio Client API. This tutorial will take you
+                through a number of exercises and point out how the game state is
+                leveraged to provide stateful experience common to connected clients.
       </p>
         </div>
     );
@@ -143,63 +141,23 @@ function About() {
         <div>
             <h3>about voter app</h3>
             <p>
-                Our application simulates an election in a multiplayer game. The game
-                state is managed in three phases (we'll talk about bgio phases next).  
-                The upper half of the display shows two game controllers (north, south)
-                which act as mutators to the game state.  Each button has specific 
-                actions it performs on the game, then the bgio state management resolves
-                those mutations into the resulting state.  One of bgio's main functions
-                is maintaining that state and managing changes published to connected 
-                clients.  In our simple game, the players start in preGame, make an election
-                between players for deal then moves to the appropriate phase (northDealer,
-                southDealer).  The application allows the current player (current turn) to 
-                perform three actions endStage (vote4me), endTurn (flip deal), and a third
-                funtion that has no side effects on the state (benign). Try pressing the 
-                buttons at the top of each client.  Reload the app to initial state by 
-                refreshing your browser.  In Local multiplayer mode the state is stored in
-                the browser, a refresh resets all state.  Note that some of the buttons
-                will behave differently based upon how you manipulate the game state.
-                This isn't client magic, but the bgio, managing permissions for each function,
-                based upon the state model values.  Remember, mutations alter state, bgio
-                manages the flow and permissions.  Open the debug console at right by typing 
-                a "." and navigate to the "Log" tab. -- the state in the log is reflected on 
-                the left and right margins. Phases are listed on the right margin in black, 
-                turns in the left in the color of the player whose turn is being logged. 
-                </p>
-                <p>
-                Exercise: reset the game, then perform the election starting with the south player.
-                Steps: reset, vote4me (south), vote4me (north).
-
-                Examine the logs and bring this understanding to the next lesson where we discuss
-                the building blocks of bgio state, Phases, Turns, and Stages.
-                
+                An app that simulates a proposal (vote) in a multiplayer game flow once
+                the election completes the game transitions to a follow-on phase. As we
+                work through the exercise, we'll point out state changes and
+                implementation details. This is a simple game controller with ide by
+                side dashboards for two imagined card players, they will each vote in
+                self interest, but the game will always award the deal to the first
+                selected client. This modest game illustrates the main bgio APIs. The
+                voter app models a state diagram representing a directed graph.
       </p>
         </div>
     );
 }
 
-function BgioState() {
+function Dashboard() {
     return (
         <div>
-            <h5>bgio state</h5>
-            <p>
-                Finally, some framework level details! bgio is a libary that is built to support 
-                multiplayer games.  A game is the outermost context which composes, in the form of abstractions,
-                , phases (optional), turns, and stages (optional). These contexts are exposed to game logic 
-                through the context API and events. As bgio traverses your game graph, it will apply state 
-                changes triggered by mutators (moves) which are allowed to change game state, and trigger events.
-            </p>
-            <h5>game</h5>
-            <p>
-                In terms of state, game is the outermost context, phases, turns, and stages all cannot exist outside
-                of the game context.  This outermost context optionally will contain phases, when a player's context 
-                leaves a phase that doesn't have a next (phase) it returns to the game context and current phase may
-                be thought of as null. A game ends when the endGame property returns a truthy value.  All phases, turns,
-                stages enclosed by the game are destroyed when a game ends. Games also compose mutators in the moves
-                property (we'll talk about these soon).  The moves defined at game level are default for enclosing objects
-                so if the child state object doesn't define a moves property, it inherits the one from its ancestor
-                that might apply.
-            </p>
+            <h5>Dashboard</h5>
         </div>
     );
 }

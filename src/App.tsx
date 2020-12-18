@@ -24,11 +24,11 @@ const endTurn = (G: IGameState, ctx: Ctx): void => {
   G.dealWasPassed = true;
   ctx.events?.endTurn?.();
 };
-const benignF = (G: IGameState, ctx: Ctx) => {
+const benign = (G: IGameState, ctx: Ctx) => {
   console.log(`${ctx.playerID} just visiting`);
 };
-const benign = { move: benignF, undoable: true, redacted: false }
-export const moves = { endStage, endTurn, benign }
+
+export const moves = { endStage, endTurn, benign };
 
 export const game: Game = {
   name: "cardtable",
