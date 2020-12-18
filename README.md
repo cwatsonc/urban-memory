@@ -8,7 +8,8 @@ A beginners tutorial on state modeling with boardgameio -- application runs as i
 
 TODO:
 
-* refine ux
+* add release branch
+* further refine ux drawers or sliding panes
 * organize static resources
 * refine speaking points
 * add fenced code samples
